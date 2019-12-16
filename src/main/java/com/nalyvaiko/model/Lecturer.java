@@ -49,12 +49,11 @@ public class Lecturer {
   private Post post;
 
   @ManyToMany()
-  @Cascade(value = {CascadeType.DETACH, CascadeType.REFRESH,
-      CascadeType.SAVE_UPDATE, CascadeType.MERGE})
+  @Cascade(value = {CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
   @JoinTable(
       name = "department_lecturer",
-      joinColumns = {@JoinColumn(name = "department_id")},
-      inverseJoinColumns = {@JoinColumn(name = "lecturer_id")}
+      joinColumns = {@JoinColumn(name = "lecturer_id")},
+      inverseJoinColumns = {@JoinColumn(name = "department_id")}
   )
   private Set<Department> departments = new HashSet<>();
 
@@ -163,5 +162,18 @@ public class Lecturer {
         .hash(getId(), getFirstName(), getMiddleName(), getSurname(),
             getDegree(),
             getSalary(), getPost(), getDepartments());
+  }
+
+  @Override
+  public String toString() {
+    return "Lecturer{" +
+        "id=" + id +
+        ", firstName='" + firstName + '\'' +
+        ", middleName='" + middleName + '\'' +
+        ", surname='" + surname + '\'' +
+        ", salary='" + salary + '\'' +
+        ", post='" + post + '\'' +
+        ", degree='" + degree + '\'' +
+        '}';
   }
 }
