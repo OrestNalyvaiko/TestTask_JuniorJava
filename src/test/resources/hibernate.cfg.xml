@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+  "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+  "http://hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <!-- Database connection properties - Driver, URL, user, password -->
+    <property name="hibernate.dialect">
+      org.hibernate.dialect.MySQL8Dialect
+    </property>
+    <property name="connection.driver_class">org.h2.Driver</property>
+    <property name="connection.url">
+      jdbc:h2:mem:testdb
+    </property>
+    <property name="connection.username">sa</property>
+    <property name="connection.password"></property>
+
+    <!-- Outputs the SQL queries, should be disabled in Production -->
+    <property name="hibernate.show_sql">true</property>
+    <property name="hbm2ddl.auto">create</property>
+
+    <mapping class="com.nalyvaiko.model.Degree"/>
+    <mapping class="com.nalyvaiko.model.Department"/>
+    <mapping class="com.nalyvaiko.model.Lecturer"/>
+
+  </session-factory>
+</hibernate-configuration>
