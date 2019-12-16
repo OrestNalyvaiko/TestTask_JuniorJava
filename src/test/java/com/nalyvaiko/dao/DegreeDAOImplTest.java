@@ -51,11 +51,11 @@ public class DegreeDAOImplTest {
   public void whenUpdateThenUpdateInDB() {
     Degree degree = new Degree();
     degree.setId(1);
-    degree.setDegreeName("assistant");
-    degreeDAO.update(degree);
+    degree.setDegreeName("professor");
+    Degree updatedDegree = degreeDAO.update(degree);
 
     assertEquals("Degree entity is not updated", degree.getDegreeName(),
-        this.degree.getDegreeName());
+        updatedDegree.getDegreeName());
   }
 
   @Test

@@ -54,16 +54,18 @@ public class DegreeDAOImpl implements DegreeDAO {
   }
 
   @Override
-  public void update(Degree entity) {
+  public Degree update(Degree entity) {
     Transaction transaction = null;
+    Degree updatedDegree = null;
     try (Session session = HibernateUtil.getSession()) {
       transaction = session.beginTransaction();
-      session.merge(entity);
+      updatedDegree = (Degree) session.merge(entity);
       transaction.commit();
     } catch (HibernateException exception) {
       Optional.ofNullable(transaction).ifPresent(Transaction::rollback);
       exception.printStackTrace();
     }
+    return updatedDegree;
   }
 
   @Override

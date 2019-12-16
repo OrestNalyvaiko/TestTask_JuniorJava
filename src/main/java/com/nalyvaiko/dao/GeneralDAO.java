@@ -11,7 +11,7 @@ public interface GeneralDAO<T, K> {
 
   void delete(T entity);
 
-  void update(T entity);
+  T update(T entity);
 
   List<T> getAll();
 }
