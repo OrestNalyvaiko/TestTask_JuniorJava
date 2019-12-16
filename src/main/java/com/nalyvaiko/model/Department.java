@@ -75,6 +75,6 @@ public class Department {
 
   @Override
   public int hashCode() {
-    return Objects.hash(getId(), getDepartmentName(), getLecturers());
+    return Objects.hash(getId(), getDepartmentName());
   }
 }
