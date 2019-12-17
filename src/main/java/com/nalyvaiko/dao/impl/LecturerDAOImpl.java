@@ -2,6 +2,7 @@ package com.nalyvaiko.dao.impl;
 
 import com.nalyvaiko.dao.LecturerDAO;
 import com.nalyvaiko.model.Lecturer;
+import com.nalyvaiko.model.enums.Post;
 import com.nalyvaiko.util.HibernateUtil;
 import java.util.List;
 import java.util.Optional;
@@ -86,5 +87,26 @@ public class LecturerDAOImpl implements LecturerDAO {
       exception.printStackTrace();
     }
     return lecturers;
+  }
+
+  @Override
+  public Lecturer getDepartmentHead(String departmentName) {
+    Transaction transaction = null;
+    Lecturer lecturer = null;
+    try (Session session = HibernateUtil.getSession()) {
+      transaction = session.beginTransaction();
+      Query<Lecturer> query = session.createQuery("SELECT lecturer " +
+              "FROM Lecturer lecturer JOIN lecturer.departments s "
+              + "WHERE s.departmentName = :departmentName AND lecturer.post = :post",
+          Lecturer.class);
+      query.setParameter("departmentName", departmentName);
+      query.setParameter("post", Post.DEPARTMENT_HEAD);
+      lecturer = query.getSingleResult();
+      transaction.commit();
+    } catch (HibernateException exception) {
+      Optional.ofNullable(transaction).ifPresent(Transaction::rollback);
+      exception.printStackTrace();
+    }
+    return lecturer;
   }
 }

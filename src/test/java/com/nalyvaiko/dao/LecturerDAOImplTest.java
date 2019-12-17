@@ -127,4 +127,18 @@ public class LecturerDAOImplTest {
 
     assertNotNull("List of lecturers is null", lecturers);
   }
+
+  @Test
+  public void whenGetDepartmentHeadThenReturnLecturer() {
+    Session session = HibernateUtil.getSession();
+    Transaction transaction = session.beginTransaction();
+    lecturer.setPost(Post.DEPARTMENT_HEAD);
+    session.save(lecturer);
+    transaction.commit();
+    session.close();
+
+    Lecturer departmentHead = lecturerDAO.getDepartmentHead("SKS");
+
+    assertNotNull("There are none department head", departmentHead);
+  }
 }

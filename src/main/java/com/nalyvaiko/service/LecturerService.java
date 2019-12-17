@@ -32,4 +32,8 @@ public class LecturerService {
   public List<Lecturer> getAllLecturers() {
     return lecturerDAO.getAll();
   }
+
+  public Lecturer getDepartmentHead(String departmentName) {
+    return lecturerDAO.getDepartmentHead(departmentName);
+  }
 }

@@ -1,6 +1,7 @@
 package com.nalyvaiko.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -104,5 +105,16 @@ public class LecturerServiceTest {
 
     assertEquals("Lecturers are not equals", lecturers, lecturersFromDB);
     verify(lecturerDAO, times(1)).getAll();
+  }
+
+  @Test
+  public void whenGetDepartmentHeadThenReturnLecturer() {
+    lecturer.setPost(Post.DEPARTMENT_HEAD);
+    when(lecturerDAO.getDepartmentHead("EOM")).thenReturn(lecturer);
+
+    Lecturer departmentHead = lecturerService.getDepartmentHead("EOM");
+
+    assertNotNull("Head of department is null", departmentHead);
+    verify(lecturerDAO, times(1)).getDepartmentHead("EOM");
   }
 }
