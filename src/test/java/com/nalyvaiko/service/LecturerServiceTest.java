@@ -7,6 +7,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.nalyvaiko.dao.DegreeDAO;
 import com.nalyvaiko.dao.LecturerDAO;
 import com.nalyvaiko.model.Degree;
 import com.nalyvaiko.model.Department;
@@ -14,8 +15,10 @@ import com.nalyvaiko.model.Lecturer;
 import com.nalyvaiko.model.enums.Post;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import org.junit.Before;
@@ -30,6 +33,8 @@ public class LecturerServiceTest {
 
   @Mock
   private LecturerDAO lecturerDAO;
+  @Mock
+  private DegreeDAO degreeDAO;
   @InjectMocks
   private LecturerService lecturerService;
   private Lecturer lecturer;
@@ -116,5 +121,27 @@ public class LecturerServiceTest {
 
     assertNotNull("Head of department is null", departmentHead);
     verify(lecturerDAO, times(1)).getDepartmentHead("EOM");
+  }
+
+  @Test
+  public void whenGetDepartmentDegreeStatisticThenReturnMap() {
+    List<Degree> degrees = new ArrayList<>();
+    Degree degree = new Degree();
+    degree.setDegreeName("assistant");
+    degrees.add(degree);
+    when(degreeDAO.getAll()).thenReturn(degrees);
+    when(lecturerDAO.countNumberOfDegreeByDepartment("EOM", "assistant"))
+        .thenReturn(1L);
+    Map<String, Long> statisticMap = new HashMap<>();
+    statisticMap.put("assistant", 1L);
+
+    Map<String, Long> returnedMap = lecturerService
+        .getDepartmentDegreeStatistic("EOM");
+
+    assertEquals("Maps is not equals", statisticMap, returnedMap);
+    verify(lecturerDAO, times(1))
+        .countNumberOfDegreeByDepartment("EOM", "assistant");
+    verify(degreeDAO, times(1)).getAll();
+
   }
 }

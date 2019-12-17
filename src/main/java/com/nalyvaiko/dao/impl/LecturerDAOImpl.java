@@ -109,4 +109,25 @@ public class LecturerDAOImpl implements LecturerDAO {
     }
     return lecturer;
   }
+
+  @Override
+  public long countNumberOfDegreeByDepartment(String departmentName,
+      String degreeName) {
+    Transaction transaction = null;
+    long count = 0;
+    try (Session session = HibernateUtil.getSession()) {
+      transaction = session.beginTransaction();
+      Query query = session.createQuery("SELECT count(*) " +
+          "FROM Lecturer lecturer JOIN lecturer.departments s "
+          + "WHERE s.departmentName = :departmentName AND lecturer.degree.degreeName = :degreeName");
+      query.setParameter("departmentName", departmentName);
+      query.setParameter("degreeName", degreeName);
+      count = (Long) query.uniqueResult();
+      transaction.commit();
+    } catch (HibernateException exception) {
+      Optional.ofNullable(transaction).ifPresent(Transaction::rollback);
+      exception.printStackTrace();
+    }
+    return count;
+  }
 }

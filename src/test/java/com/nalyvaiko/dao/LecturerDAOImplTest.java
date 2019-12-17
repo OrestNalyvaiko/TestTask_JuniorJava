@@ -141,4 +141,13 @@ public class LecturerDAOImplTest {
 
     assertNotNull("There are none department head", departmentHead);
   }
+
+  @Test
+  public void whenCountNumberOfDegreeByDepartmentReturnNumber() {
+    long numberOfLecturersWithDegree = lecturerDAO
+        .countNumberOfDegreeByDepartment("EOM", "assistant");
+
+    assertEquals("Expected and actual count is not equal", 1,
+        numberOfLecturersWithDegree);
+  }
 }
