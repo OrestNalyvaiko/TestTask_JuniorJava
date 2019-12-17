@@ -150,4 +150,23 @@ public class LecturerDAOImpl implements LecturerDAO {
     }
     return averageSalary;
   }
+
+  @Override
+  public long countEmployeesOfDepartment(String departmentName) {
+    Transaction transaction = null;
+    long countOfEmployees = 0;
+    try (Session session = HibernateUtil.getSession()) {
+      transaction = session.beginTransaction();
+      Query query = session.createQuery("SELECT count(lecturer)" +
+          "FROM Lecturer lecturer JOIN lecturer.departments s "
+          + "WHERE s.departmentName = :departmentName");
+      query.setParameter("departmentName", departmentName);
+      countOfEmployees = (Long) query.uniqueResult();
+      transaction.commit();
+    } catch (HibernateException exception) {
+      Optional.ofNullable(transaction).ifPresent(Transaction::rollback);
+      exception.printStackTrace();
+    }
+    return countOfEmployees;
+  }
 }

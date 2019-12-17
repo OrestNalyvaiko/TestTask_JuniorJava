@@ -157,4 +157,15 @@ public class LecturerServiceTest {
         lecturer.getSalary(), averageSalary);
     verify(lecturerDAO, times(1)).countAverageSalaryOfDepartment("EOM");
   }
+
+  @Test
+  public void whenCountEmployeesOfDepartmentThenReturnAmountOfEmployees() {
+    when(lecturerDAO.countEmployeesOfDepartment("EOM")).thenReturn(1L);
+
+    long employeesCount = lecturerService.countEmployeesOfDepartment("EOM");
+
+    assertEquals("Expected and actual employees count are not equal",
+        1, employeesCount);
+    verify(lecturerDAO, times(1)).countEmployeesOfDepartment("EOM");
+  }
 }

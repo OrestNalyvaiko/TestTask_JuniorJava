@@ -159,4 +159,12 @@ public class LecturerDAOImplTest {
     assertEquals("Expected and actual average salary are not equal",
         lecturer.getSalary(), averageSalary);
   }
+
+  @Test
+  public void whenCountEmployeesOfDepartmentThenReturnAmountOfEmployees() {
+    long employeesCount = lecturerDAO.countEmployeesOfDepartment("EOM");
+
+    assertEquals("Expected and actual count of employees are not equal",
+        1, employeesCount);
+  }
 }

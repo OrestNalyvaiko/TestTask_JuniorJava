@@ -60,4 +60,8 @@ public class LecturerService {
   public BigDecimal countAverageSalaryOfDepartment(String departmentName) {
     return lecturerDAO.countAverageSalaryOfDepartment(departmentName);
   }
+
+  public long countEmployeesOfDepartment(String departmentName) {
+    return lecturerDAO.countEmployeesOfDepartment(departmentName);
+  }
 }

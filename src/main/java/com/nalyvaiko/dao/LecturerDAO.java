@@ -11,4 +11,6 @@ public interface LecturerDAO extends GeneralDAO<Lecturer, Integer> {
       String degreeName);
 
   BigDecimal countAverageSalaryOfDepartment(String departmentName);
+
+  long countEmployeesOfDepartment(String departmentName);
 }
