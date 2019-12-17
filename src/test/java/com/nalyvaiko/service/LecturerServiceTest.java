@@ -168,4 +168,26 @@ public class LecturerServiceTest {
         1, employeesCount);
     verify(lecturerDAO, times(1)).countEmployeesOfDepartment("EOM");
   }
+
+  @Test
+  public void whenSearchLecturersByTemplateThenReturnListOfLecturerNames() {
+    List<Lecturer> lecturers = new ArrayList<>();
+    lecturers.add(lecturer);
+    when(lecturerDAO
+        .getLecturersWhichFirstOrMiddleNamesOrSurnameMatchTemplate("Naly"))
+        .thenReturn(lecturers);
+
+    List<String> lecturersNames = new ArrayList<>();
+    lecturersNames.add(
+        lecturer.getFirstName() + " " + lecturer.getMiddleName() + " "
+            + lecturer.getSurname());
+
+    List<String> returnedLecturersNames = lecturerService
+        .searchLecturersByTemplate("Naly");
+
+    assertEquals("Expected and actual lecturers names are not equal",
+        lecturersNames, returnedLecturersNames);
+    verify(lecturerDAO, times(1))
+        .getLecturersWhichFirstOrMiddleNamesOrSurnameMatchTemplate("Naly");
+  }
 }

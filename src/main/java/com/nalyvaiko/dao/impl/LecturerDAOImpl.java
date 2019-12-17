@@ -169,4 +169,25 @@ public class LecturerDAOImpl implements LecturerDAO {
     }
     return countOfEmployees;
   }
+
+  @Override
+  public List<Lecturer> getLecturersWhichFirstOrMiddleNamesOrSurnameMatchTemplate(
+      String template) {
+    Transaction transaction = null;
+    List<Lecturer> lecturers = null;
+    try (Session session = HibernateUtil.getSession()) {
+      transaction = session.beginTransaction();
+      Query<Lecturer> query = session.createQuery("SELECT l FROM Lecturer l "
+          + "WHERE l.firstName LIKE :template OR "
+          + "l.middleName LIKE :template OR "
+          + "l.surname LIKE :template", Lecturer.class);
+      query.setParameter("template", "%" + template + "%");
+      lecturers = query.getResultList();
+      transaction.commit();
+    } catch (HibernateException exception) {
+      Optional.ofNullable(transaction).ifPresent(Transaction::rollback);
+      exception.printStackTrace();
+    }
+    return lecturers;
+  }
 }

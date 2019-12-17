@@ -7,6 +7,7 @@ import com.nalyvaiko.dao.impl.LecturerDAOImpl;
 import com.nalyvaiko.model.Degree;
 import com.nalyvaiko.model.Lecturer;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,5 +64,18 @@ public class LecturerService {
 
   public long countEmployeesOfDepartment(String departmentName) {
     return lecturerDAO.countEmployeesOfDepartment(departmentName);
+  }
+
+  public List<String> searchLecturersByTemplate(String template) {
+    List<String> lecturersFirstMiddleNamesSurname = new ArrayList<>();
+    List<Lecturer> lecturers = lecturerDAO
+        .getLecturersWhichFirstOrMiddleNamesOrSurnameMatchTemplate(template);
+    for (Lecturer lecturer : lecturers) {
+      String concatLecturerNames =
+          lecturer.getFirstName() + " " + lecturer.getMiddleName() + " "
+              + lecturer.getSurname();
+      lecturersFirstMiddleNamesSurname.add(concatLecturerNames);
+    }
+    return lecturersFirstMiddleNamesSurname;
   }
 }

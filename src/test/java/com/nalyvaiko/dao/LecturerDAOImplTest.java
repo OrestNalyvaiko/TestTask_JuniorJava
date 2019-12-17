@@ -11,6 +11,7 @@ import com.nalyvaiko.model.Lecturer;
 import com.nalyvaiko.model.enums.Post;
 import com.nalyvaiko.util.HibernateUtil;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -63,7 +64,7 @@ public class LecturerDAOImplTest {
     degree.setId(1);
     degree.setDegreeName("assistant");
     lecturer.setDegree(degree);
-    lecturer.setSalary(BigDecimal.valueOf(1500.00));
+    lecturer.setSalary(new BigDecimal(1500.00));
     lecturer.setPost(Post.DEPARTMENT_MEMBER);
     Department firstDepartment = new Department();
     firstDepartment.setId(1);
@@ -166,5 +167,18 @@ public class LecturerDAOImplTest {
 
     assertEquals("Expected and actual count of employees are not equal",
         1, employeesCount);
+  }
+
+  @Test
+  public void whenGetLecturersWhichFirstOrMiddleNamesOrSurnameMatchTemplateThenReturnListOfLecturer() {
+    List<Lecturer> lecturers = new ArrayList<>();
+    lecturers.add(lecturer);
+
+    List<Lecturer> lecturersFromDB = lecturerDAO
+        .getLecturersWhichFirstOrMiddleNamesOrSurnameMatchTemplate("Naly");
+
+    assertEquals("Expected and actual lecturers are not equal",
+        lecturers.get(0).getId(),
+        lecturersFromDB.get(0).getId());
   }
 }
