@@ -150,4 +150,13 @@ public class LecturerDAOImplTest {
     assertEquals("Expected and actual count is not equal", 1,
         numberOfLecturersWithDegree);
   }
+
+  @Test
+  public void whenCountAverageSalaryOfDepartmentThenReturnAverageSalary() {
+    BigDecimal averageSalary = lecturerDAO
+        .countAverageSalaryOfDepartment("EOM");
+
+    assertEquals("Expected and actual average salary are not equal",
+        lecturer.getSalary(), averageSalary);
+  }
 }

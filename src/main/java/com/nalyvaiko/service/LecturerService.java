@@ -6,6 +6,7 @@ import com.nalyvaiko.dao.impl.DegreeDAOImpl;
 import com.nalyvaiko.dao.impl.LecturerDAOImpl;
 import com.nalyvaiko.model.Degree;
 import com.nalyvaiko.model.Lecturer;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,5 +55,9 @@ public class LecturerService {
       statisticMap.put(degree.getDegreeName(), numberOfLecturersWithDegree);
     }
     return statisticMap;
+  }
+
+  public BigDecimal countAverageSalaryOfDepartment(String departmentName) {
+    return lecturerDAO.countAverageSalaryOfDepartment(departmentName);
   }
 }

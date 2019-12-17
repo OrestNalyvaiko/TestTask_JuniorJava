@@ -4,6 +4,7 @@ import com.nalyvaiko.dao.LecturerDAO;
 import com.nalyvaiko.model.Lecturer;
 import com.nalyvaiko.model.enums.Post;
 import com.nalyvaiko.util.HibernateUtil;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import org.hibernate.HibernateException;
@@ -129,5 +130,24 @@ public class LecturerDAOImpl implements LecturerDAO {
       exception.printStackTrace();
     }
     return count;
+  }
+
+  @Override
+  public BigDecimal countAverageSalaryOfDepartment(String departmentName) {
+    Transaction transaction = null;
+    BigDecimal averageSalary = null;
+    try (Session session = HibernateUtil.getSession()) {
+      transaction = session.beginTransaction();
+      Query query = session.createQuery("SELECT avg(lecturer.salary) " +
+          "FROM Lecturer lecturer JOIN lecturer.departments s "
+          + "WHERE s.departmentName = :departmentName");
+      query.setParameter("departmentName", departmentName);
+      averageSalary = BigDecimal.valueOf((Double) query.uniqueResult());
+      transaction.commit();
+    } catch (HibernateException exception) {
+      Optional.ofNullable(transaction).ifPresent(Transaction::rollback);
+      exception.printStackTrace();
+    }
+    return averageSalary;
   }
 }

@@ -144,4 +144,17 @@ public class LecturerServiceTest {
     verify(degreeDAO, times(1)).getAll();
 
   }
+
+  @Test
+  public void whenCountAverageSalaryOfDepartmentThenReturnAverageSalary() {
+    when(lecturerDAO.countAverageSalaryOfDepartment("EOM"))
+        .thenReturn(BigDecimal.valueOf(1500.00));
+
+    BigDecimal averageSalary = lecturerService
+        .countAverageSalaryOfDepartment("EOM");
+
+    assertEquals("Expected and actual average salary are not equal",
+        lecturer.getSalary(), averageSalary);
+    verify(lecturerDAO, times(1)).countAverageSalaryOfDepartment("EOM");
+  }
 }
