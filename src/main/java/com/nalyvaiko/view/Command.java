@@ -1,7 +1,7 @@
 package com.nalyvaiko.view;
 
 @FunctionalInterface
-public interface Printable {
+public interface Command {
 
-  void print();
+  void execute();
 }

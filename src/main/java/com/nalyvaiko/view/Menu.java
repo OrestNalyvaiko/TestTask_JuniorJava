@@ -1,12 +1,6 @@
 package com.nalyvaiko.view;
 
-import com.nalyvaiko.model.Department;
-import com.nalyvaiko.model.Lecturer;
-import com.nalyvaiko.service.DepartmentService;
-import com.nalyvaiko.service.LecturerService;
-import java.math.BigDecimal;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -14,15 +8,34 @@ public class Menu {
 
   private static Scanner input = new Scanner(System.in);
   private Map<String, String> menu;
-  private Map<String, Printable> methodsMenu;
-  private LecturerService lecturerService;
-  private DepartmentService departmentService;
+  private Map<String, Command> methodsMenu;
 
   public Menu() {
     menu = new LinkedHashMap<>();
     methodsMenu = new LinkedHashMap<>();
-    lecturerService = new LecturerService();
-    departmentService = new DepartmentService();
+    UserConsoleCommunicator userConsoleCommunicator = new UserConsoleCommunicator();
+
+    menu.put("1", "   1 - Work with Department table");
+    menu.put("11", "  11 - Create new Department");
+    menu.put("12", "  12 - Update Department");
+    menu.put("13", "  13 - Delete from Department");
+    menu.put("14", "  14 - Get all Departments");
+    menu.put("15", "  15 - Get Department by ID");
+
+    menu.put("2", "   2 - Work with Degree table");
+    menu.put("21", "  21 - Create new Degree");
+    menu.put("22", "  22 - Update Degree");
+    menu.put("23", "  23 - Delete from Degree");
+    menu.put("24", "  24 - Get all Degrees");
+    menu.put("25", "  25 - Get Degree by ID");
+
+    menu.put("3", "   3 - Work with Lecturer table");
+    menu.put("31", "  31 - Create new Lecturer");
+    menu.put("32", "  32 - Update Lecturer");
+    menu.put("33", "  33 - Delete from Lecturer");
+    menu.put("34", "  34 - Get all Lecturer");
+    menu.put("35", "  35 - Get Lecturer by ID");
+
     menu.put("A", "   A - Get Department Head");
     menu.put("B", "   B - Show department statistic");
     menu.put("C", "   C - Show the average salary for department");
@@ -31,70 +44,32 @@ public class Menu {
 
     menu.put("Q", "   Q - exit");
 
-    methodsMenu.put("A", this::getDepartmentHead);
-    methodsMenu.put("B", this::showStatistic);
-    methodsMenu.put("C", this::showAverageSalary);
-    methodsMenu.put("D", this::showEmployeesCount);
-    methodsMenu.put("E", this::searchByTemplate);
-  }
+    methodsMenu.put("A", userConsoleCommunicator::getDepartmentHead);
+    methodsMenu.put("B", userConsoleCommunicator::showStatistic);
+    methodsMenu.put("C", userConsoleCommunicator::showAverageSalary);
+    methodsMenu.put("D", userConsoleCommunicator::showEmployeesCount);
+    methodsMenu.put("E", userConsoleCommunicator::searchByTemplate);
 
-  private void getDepartmentHead() {
-    showAllDepartments();
-    System.out.print("Input department name: ");
-    String departmentName = input.nextLine();
-    Lecturer departmentHead = lecturerService.getDepartmentHead(departmentName);
-    System.out.println(
-        "Head of " + departmentName + " department is " + departmentHead
-            .getDegree().getDegreeName() + " " + departmentHead.getSurname()
-            + " " + departmentHead.getFirstName() + " " + departmentHead
-            .getMiddleName());
-  }
+    methodsMenu.put("11", userConsoleCommunicator::addDepartment);
+    methodsMenu.put("12", userConsoleCommunicator::updateDepartment);
+    methodsMenu.put("13", userConsoleCommunicator::deleteDepartment);
+    methodsMenu.put("14", userConsoleCommunicator::getAllDepartments);
+    methodsMenu.put("15", userConsoleCommunicator::getDepartmentById);
 
-  private void showStatistic() {
-    showAllDepartments();
-    System.out.print("Input department name: ");
-    String departmentName = input.nextLine();
-    Map<String, Long> departmentStatistic = lecturerService
-        .getDepartmentDegreeStatistic(departmentName);
-    for (Map.Entry entrySet : departmentStatistic.entrySet()) {
-      System.out.println(entrySet.getKey() + " - " + entrySet.getValue());
-    }
-  }
+    methodsMenu.put("21", userConsoleCommunicator::addDegree);
+    methodsMenu.put("22", userConsoleCommunicator::updateDegree);
+    methodsMenu.put("23", userConsoleCommunicator::deleteDegree);
+    methodsMenu.put("24", userConsoleCommunicator::getAllDegrees);
+    methodsMenu.put("25", userConsoleCommunicator::getDegreeById);
 
-  private void showAverageSalary() {
-    showAllDepartments();
-    System.out.print("Input department name: ");
-    String departmentName = input.nextLine();
-    BigDecimal averageSalary = lecturerService
-        .countAverageSalaryOfDepartment(departmentName);
-    System.out.println(
-        "The average salary of " + departmentName + " is " + averageSalary);
-  }
+    methodsMenu.put("31", userConsoleCommunicator::addLecturer);
+    methodsMenu.put("32", userConsoleCommunicator::updateLecturer);
+    methodsMenu.put("33", userConsoleCommunicator::deleteLecturer);
+    methodsMenu.put("34", userConsoleCommunicator::getAllLecturers);
+    methodsMenu.put("35", userConsoleCommunicator::getLecturerByID);
 
-  private void showEmployeesCount() {
-    showAllDepartments();
-    System.out.print("Input department name: ");
-    String departmentName = input.nextLine();
-    long employeesCount = lecturerService
-        .countEmployeesOfDepartment(departmentName);
-    System.out.println(
-        "Employees count for " + departmentName + " is " + employeesCount);
-  }
 
-  private void searchByTemplate() {
-    System.out.print("Input template: ");
-    String template = input.nextLine();
-    List<String> lecturersName = lecturerService
-        .searchLecturersByTemplate(template);
-    lecturersName.forEach(System.out::println);
   }
-
-  private void showAllDepartments() {
-    System.out.println("Department names:");
-    departmentService.getAllDepartments().stream()
-        .map(Department::getDepartmentName).forEach(System.out::println);
-  }
-
 
   private void outputMenu() {
     System.out.println("\nMENU:");
@@ -105,16 +80,30 @@ public class Menu {
     }
   }
 
+  private void outputSubMenu(String keyMenu) {
+    System.out.println("\nSubMENU:");
+    for (String key : menu.keySet()) {
+      if (key.length() != 1 && key.substring(0, 1).equals(keyMenu)) {
+        System.out.println(menu.get(key));
+      }
+    }
+  }
+
   public void show() {
     String keyMenu;
     do {
       outputMenu();
       System.out.println("Please, select menu point.");
-      keyMenu = input.nextLine().toUpperCase();
+      keyMenu = input.nextLine();
+      if (keyMenu.matches("^\\d")) {
+        outputSubMenu(keyMenu);
+        System.out.println("Please, select menu point.");
+        keyMenu = input.nextLine().toUpperCase();
+      }
       try {
-        methodsMenu.get(keyMenu).print();
+        methodsMenu.get(keyMenu).execute();
       } catch (Exception e) {
-        e.printStackTrace();
+        keyMenu = "Q";
         System.out.println("Program ends");
       }
     } while (!keyMenu.equals("Q"));
