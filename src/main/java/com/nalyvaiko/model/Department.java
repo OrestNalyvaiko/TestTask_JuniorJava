@@ -69,12 +69,19 @@ public class Department {
     }
     Department that = (Department) o;
     return Objects.equals(getId(), that.getId()) &&
-        Objects.equals(getDepartmentName(), that.getDepartmentName()) &&
-        Objects.equals(getLecturers(), that.getLecturers());
+        Objects.equals(getDepartmentName(), that.getDepartmentName());
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(getId(), getDepartmentName());
+  }
+
+  @Override
+  public String toString() {
+    return "Department{" +
+        "id=" + id +
+        ", departmentName='" + departmentName + '\'' +
+        '}';
   }
 }
