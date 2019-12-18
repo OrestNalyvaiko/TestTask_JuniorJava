@@ -87,4 +87,23 @@ public class DepartmentDAOImpl implements DepartmentDAO {
     }
     return departments;
   }
+
+  @Override
+  public Department getDepartmentByDepartmentName(String departmentName) {
+    Transaction transaction = null;
+    Department department = null;
+    try (Session session = HibernateUtil.getSession()) {
+      transaction = session.beginTransaction();
+      Query<Department> query = session.createQuery("SELECT department " +
+              "FROM Department department WHERE department.departmentName = :departmentName",
+          Department.class);
+      query.setParameter("departmentName", departmentName);
+      department = query.uniqueResult();
+      transaction.commit();
+    } catch (HibernateException exception) {
+      Optional.ofNullable(transaction).ifPresent(Transaction::rollback);
+      exception.printStackTrace();
+    }
+    return department;
+  }
 }

@@ -32,4 +32,8 @@ public class DepartmentService {
   public List<Department> getAllDepartments() {
     return departmentDAO.getAll();
   }
+
+  public Department getDepartmentByDepartmentName(String departmentName) {
+    return departmentDAO.getDepartmentByDepartmentName(departmentName);
+  }
 }

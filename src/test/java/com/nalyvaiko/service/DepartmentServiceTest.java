@@ -86,4 +86,18 @@ public class DepartmentServiceTest {
     assertEquals("Departments are not equals", departments, departmentsFromDB);
     verify(departmentDAO, times(1)).getAll();
   }
+
+  @Test
+  public void whenGetDepartmentByDepartmentName() {
+    when(departmentDAO
+        .getDepartmentByDepartmentName(department.getDepartmentName()))
+        .thenReturn(department);
+
+    Department departmentFromDB = departmentService
+        .getDepartmentByDepartmentName(department.getDepartmentName());
+
+    assertEquals("Departments are not equals", department, departmentFromDB);
+    verify(departmentDAO, times(1))
+        .getDepartmentByDepartmentName(department.getDepartmentName());
+  }
 }

@@ -75,4 +75,12 @@ public class DepartmentDAOImplTest {
 
     assertNotNull("List of degrees is null", departments);
   }
+
+  @Test
+  public void whenGetDepartmentByDepartmentNameThenReturnDepartmentFromDB() {
+    Department departmentFromDB = departmentDAO
+        .getDepartmentByDepartmentName(department.getDepartmentName());
+
+    assertEquals("Departments are not equal", department, departmentFromDB);
+  }
 }

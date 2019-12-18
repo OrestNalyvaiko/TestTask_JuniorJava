@@ -4,4 +4,5 @@ import com.nalyvaiko.model.Department;
 
 public interface DepartmentDAO extends GeneralDAO<Department, Integer> {
 
+  Department getDepartmentByDepartmentName(String departmentName);
 }
